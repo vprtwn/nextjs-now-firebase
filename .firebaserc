@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "staging": "emails-show-8eb6f",
+    "production": "emails-show-prod"
+  }
+}
