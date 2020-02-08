@@ -1,51 +1,156 @@
-# Example: Firebase authentication with a serverless API
+This tutorial walks through setting up a new project using:
+- [Next.js](https://nextjs.org/) (React framework)
+- [ZEIT Now](https://zeit.co/docs) (Hosting)
+- Firebase ([Authentication](https://firebase.google.com/docs/auth/), [Storage](https://firebase.google.com/docs/firestore/), [Functions](https://firebase.google.com/docs/functions/))
 
-## How to use
+I've also included [Tailwind CSS](https://tailwindcss.com/) (with ~zero styling). Here's what the sign up page looks like :)
 
-### Using `create-next-app`
+<img src="https://dev-to-uploads.s3.amazonaws.com/i/yo9xmba1cv05dxfbj09g.png" width=200px> 
 
-Execute [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
+You can follow along using this ↗️ [template project](https://github.com/benzguo/nextjs-now-firebase)
 
-```bash
-npx create-next-app --example with-firebase-authentication-serverless with-firebase-authentication-serverless-app
-# or
-yarn create next-app --example with-firebase-authentication-serverless with-firebase-authentication-serverless-app
+
+---------
+
+
+## Firebase [ SETUP ]
+
+First, create 2 Firebase projects:
+1. `my-project-staging`
+2. `my-project-production`
+
+You'll need to click some buttons to fully set up a project:
+- add a web app
+- enable X
+- enable Y
+
+
+Next, add these two projects using the Firebase CLI, and [alias](https://firebase.googleblog.com/2016/07/deploy-to-multiple-environments-with.html) them to "staging" and "production".
+
+```
+⟩ firebase use --add
+⟩ ? Which project do you want to add? (Use arrow keys)
+  my-project-production
+> my-project-staging
+? What alias do you want to use for this project? (e.g. staging) staging
+Created alias staging my-project-staging.
+Now using alias staging (my-project-staging)
+
 ```
 
-### Download manually
 
-Download the example:
+## ZEIT Now [ SETUP ]
 
-```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/with-firebase-authentication-serverless
-cd with-firebase-authentication-serverless
+... todo ...
+
+
+
+## Now & Firebase [ SETUP ]
+
+### secrets – staging
+
+Back in the Firebase console, open your __staging__ project and find your web app configuration variables (under Project Settings).
+
+Enter these variables in the `.env` and `.env.build` files included in the template project.
+
+├── [.env](https://github.com/benzguo/nextjs-now-firebase-template/blob/master/.env)
+├── [.env.build](https://github.com/benzguo/nextjs-now-firebase-template/blob/master/.env.build)
+
+
+> note: these `.env` files are in the template project's [`.gitignore`](https://github.com/benzguo/nextjs-now-firebase-template/blob/master/.gitignore) 🔒
+
+
+## secrets – production
+
+Back in the Firebase console, open your _production_ project and find your web app configuration variables (under Project Settings). 
+
+For this step, you'll also need your `client email` and `private key` from your `serviceAccount-production.json`.
+
+```
+now secrets add firebase-api-key YOUR-API-KEY
+
+now secrets add firebase-auth-domain your-project-id.firebaseapp.com
+
+now secrets add firebase-database-url https://my-project-id.firebaseio.com
+
+now secrets add firebase-project-id your-project-id
+
+now secrets add firebase-storage-bucket your-project-id.appspot.com
+
+now secrets add firebase-messaging-sender-id your-sender-id
+
+now secrets add firebase-app-id your-app-id
+
+now secrets add firebase-measurement-id G-YOUR-MEASUREMENT-ID
+
+now secrets add firebase-client-email your-client-email.iam.gserviceaccount.com
+
+now secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----YOUR/PRIVATE/KEY---END PRIVATE KEY-----\n"
 ```
 
-Set up Firebase:
 
-- Create a project at the [Firebase console](https://console.firebase.google.com/).
-- Get your account credentials from the Firebase console at _Project settings > Service accounts_, where you can click on _Generate new private key_ and download the credentials as a json file. It will contain keys such as `project_id`, `client_email` and `client_id`. Set them as environment variables in the `.env` file at the root of this project.
-- Get your authentication credentials from the Firebase console under _Project settings > General> Your apps_ Add a new web app if you don't already have one. Under _Firebase SDK snippet_ choose _Config_ to get the configuration as JSON. It will include keys like `apiKey`, `authDomain` and `databaseUrl`. Set the appropriate environment variables in the `.env` file at the root of this project.
-- Set the environment variables `SESSION_SECRET_CURRENT` and `SESSION_SECRET_PREVIOUS` in the `.env` file. (These are used by [`cookie-session`](https://github.com/expressjs/cookie-session/#secret).]
+...
 
-Install it and run:
 
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
+## Functions [ SETUP ]
+
+To set up Firebase functions, you'll need to [download service account keys](https://firebase.google.com/docs/admin/setup?authuser=0#initialize-sdk) for your `production` and `staging` projects.
+
+Rename the two key files (`serviceAccount-{environment}.json`), and move them to the root of your `/functions` directory:
+```
+/functions
+├── serviceAccount-staging.json 
+├── serviceAccount-production.json 
 ```
 
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download))
+> keep these secrets safe! these files are in the template project's `.gitignore`, so make sure you're storing them somewhere else 🔒
 
-```bash
-now
+Next, configure your staging & production projects with an `environment` config variable. Functions [use this config](https://github.com/benzguo/nextjs-now-firebase-template/blob/master/functions/src/index.ts#L6) variable to decide which keys to use at runtime.
+
+```
+⟩ firebase use staging
+Now using alias staging (my-staging-project)
+
+⟩ firebase functions:config:set app.environment="staging"
+✔  Functions config updated.
+
+⟩ firebase use production
+Now using alias production (my-production-project)
+
+⟩ firebase functions:config:set app.environment="production"
+✔  Functions config updated.
 ```
 
-After `now` successfully deploys, a URL will for your site will be displayed. Copy that URL and navigate to your Firebase project's Authentication tab. Scroll down in the page to "Authorized domains" and add that URL to the list.
 
-## The idea behind the example
+## Functions [ DEVELOP ]
 
-This example includes Firebase authentication and serverless [API routes](https://nextjs.org/docs/api-routes/introduction). On login, the app calls `/api/login`, which stores the user's info (their decoded Firebase token) in a cookie so that it's available server-side in `getInitialProps`. On logout, the app calls `/api/logout` to destroy the cookie.
+To develop functions locally, use `npm run shell`:
+
+```
+⟩ npm run shell
+...
+✔  functions: Emulator started at http://localhost:5000
+i  functions: Loaded functions: getEnvironment
+firebase > getEnvironment({})
+Sent request to function.
+firebase > 
+RESPONSE RECEIVED FROM FUNCTION: 200, {
+  "result": {
+    "environment": "staging"
+  }
+}
+```
+
+This project [is configured](https://firebase.google.com/docs/functions/local-emulator#set_up_functions_configuration_optional) to use _staging_ when running functions locally.
+
+## Functions [ DEPLOY ]
+
+Deploy to staging:
+`firebase deploy -P staging --only functions`
+
+Deploy to production:
+`firebase deploy -P production --only functions`
+
+
+
+
