@@ -25,8 +25,8 @@ yarn-error.log*
 .now
 
 # secrets - staging
-# .env.build
-# .env
+.env.build
+.env
 
 # functions
 
