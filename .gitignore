@@ -39,5 +39,7 @@ yarn-error.log*
 
 /functions/node_modules/
 
+serviceAccount*
+/functions/serviceAccount*
 /functions/serviceAccount-staging.json
 /functions/serviceAccount-production.json
