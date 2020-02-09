@@ -1,3 +1,5 @@
+## [DEV.TO: ▲🔥 Getting started with Next.js + Now + Firebase](https://dev.to/benzguo/getting-started-with-next-js-now-firebase-4ejg)
+
 > This is a tutorial focused on setting up a minimal template project for Next.js, ZEIT Now, and Firebase. 
 > - The template project is an extension of the official Next.js [with-firebase-authentication-serverless](https://github.com/zeit/next.js/tree/canary/examples/with-firebase-authentication-serverless) example, with a bit more functionality. 
 > - This tutorial provides some extra guidance on setting up environments & keys (which I've found to be lacking elsewhere on the web).
