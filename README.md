@@ -30,26 +30,27 @@ This template app includes:
 
 # ▲ Sign up for ZEIT
 
-First, sign up for ZEIT. I used the email signup flow, and thought it was pretty good – you can check out my screenshots of the flow [[ here ]](https://dev.to/benzguo/zeit-now-signup-flow-49le).
+[[ ⤴️ Sign up for ZEIT ]](https://zeit.co/signup?with-email=1) 
+
+I used the email signup flow, and thought it was pretty nice ✨ You can check out screenshots of the flow [[ ⤵️ here ]](https://dev.to/benzguo/zeit-now-signup-flow-49le).
 
 ![ZEIT – empty dashboard](https://dev-to-uploads.s3.amazonaws.com/i/55wy84o7oy0vzmajs1cl.png)
 
 
-# 🔥 Sign up for Firebase
+# 🔥 Set up Firebase
 
-Next, sign up for a Firebase account, and create two projects (one for your "staging" environment, and another for "production).
+[[ ⤴️ Sign up for Firebase ]](https://console.firebase.google.com/) 
 
-Check out the full walkthrough [[ here ]](https://dev.to/benzguo/zeit-now-signup-flow-49le).
+Sign into your Firebase account, and create **two** projects (one for your **staging** environment, and another for your **production** environment).
 
+tl;dr: You'll need to do some clicking around to fully configure a new Firebase project. Check out the full walk-through [[ ⤵️ here ]](https://dev.to/benzguo/firebase-setup-3320).
 
 ![Firebase – 2 projects](https://dev-to-uploads.s3.amazonaws.com/i/3fb0iadewxeiz6qe0qxy.png)
 
 
 # ▲ Set up Now CLI
 
-First, generate a new project using [the Github template](https://github.com/benzguo/nextjs-now-firebase), clone it, and navigate to the directory in your terminal. 
-
-Next, [install the Now CLI](https://zeit.co/download) and run `now login`
+First, [install the Now CLI](https://zeit.co/download) and run `now login`
 
 ![now login](https://dev-to-uploads.s3.amazonaws.com/i/pex7mfz3d29xsy5hdqw1.png)
 
@@ -59,7 +60,11 @@ Now, [install the Firebase CLI](https://firebase.google.com/docs/cli#mac-linux-n
 
 ![firebase login](https://dev-to-uploads.s3.amazonaws.com/i/d62gved7hiqdnizsc79j.png)
 
-Run `firebase use --add` to add your two projects to the Firebase CLI. Use "staging" and "production" as [aliases](https://firebase.googleblog.com/2016/07/deploy-to-multiple-environments-with.html).
+If you haven't done this already: generate a new project from the template, clone it, and navigate to the directory in your terminal. 
+
+{% github benzguo/nextjs-now-firebase no-readme %}
+
+Run `firebase use --add` to add the two projects you created to the Firebase CLI. Use "staging" and "production" as [aliases](https://firebase.googleblog.com/2016/07/deploy-to-multiple-environments-with.html).
 
 ![firebase use --add](https://dev-to-uploads.s3.amazonaws.com/i/x02qksb1bfohnm1r6hy3.png)
 
@@ -78,10 +83,11 @@ Save the key file in the `functions` directory as `serviceAccount-staging.json`
 > 📁 functions
 > ├── serviceAccount-staging.json 
 
-<img src="https://dev-to-uploads.s3.amazonaws.com/i/brwrosh6u4gvtrudjif2.png" width="300px">
+<img src="https://dev-to-uploads.s3.amazonaws.com/i/brwrosh6u4gvtrudjif2.png" width="400px">
 
-> ⚠️ Your private key (in `serviceAccount-staging.json`) gives access to your project's Firebase services. Keep it confidential and never store it in a public repository.
-> Note that `serviceAccount*` files are in the project's `.gitignore`, so they won't be checked into your repository. Make sure you keep a copy of these files somewhere safe! 🔒
+> ⚠️ Your private key (in your service account key file) gives access to your project's Firebase services. Keep it confidential and **never store it in a public repository**.
+>
+> Note that `serviceAccount*` files are in the project's `.gitignore`, so they won't be checked into your repository.  Make sure you [follow best practices for keeping these keys safe](https://cloud.google.com/blog/products/gcp/help-keep-your-google-cloud-service-account-keys-safe)! 🔒
 
 Next, find your **app keys** (under Project settings).
 
@@ -96,7 +102,9 @@ Create two `env` files:
 `$ touch .env`
 `$ touch .env.build`
 
-Add the content below to these files, filling in your Firebase keys.
+Add the content below to these 2 env files, filling in your Firebase keys.
+
+#### .env
 
 ```html
 # .env
@@ -110,6 +118,8 @@ FIREBASE_MESSAGING_SENDER_ID=■■■■■■■■
 FIREBASE_APP_ID=1:■■■■■■■■:web:■■■■■■■■
 FIREBASE_MEASUREMENT_ID=G-■■■■■■■■
 ```
+
+#### .env.build
 
 ```html
 # .env.build
@@ -126,6 +136,10 @@ FIREBASE_MEASUREMENT_ID=G-■■■■■■■■
 FIREBASE_CLIENT_EMAIL=firebase-adminsdk-■■■■@■■■■■■■■.iam.gserviceaccount.com
 FIREBASE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n
 ```
+
+> ⚠️ These keys give access to your project's Firebase services. Keep them confidential and **never store them in a public repository**.
+>
+> Note that `.env*` files are in the project's `.gitignore`, so they won't be checked into your repository. Make sure you [follow best practices for keeping these keys safe](https://cloud.google.com/blog/products/gcp/help-keep-your-google-cloud-service-account-keys-safe)! 🔒
 
 Now, you're ready to try running the app locally.
 
@@ -255,19 +269,22 @@ Finally, we'll run `now` to set up a ZEIT Now project and deploy to production.
 
 # 📌 Reference
 
-#### Run app locally (using staging environment)
+##### Run app locally (using staging environment)
 `$ now dev` 
 
-#### Deploy functions to staging
+##### Deploy functions to staging
 `$ firebase deploy -P staging --only functions` 
 
-#### Deploy functions to production
+##### Deploy functions to production
 `$ firebase deploy -P production --only functions` 
 
-#### Run functions locally
+##### Run functions locally
 `$ cd functions && npm run shell` 
 
-#### Deploy to production
+##### Deploy to production
 `$ now --prod` 
+
+
+
 
 
