@@ -50,9 +50,9 @@ tl;dr: You'll need to do some clicking around to fully configure a new Firebase 
 
 # ▲ Set up Now CLI
 
-[Install the Now CLI](https://zeit.co/download) and run `now login`
+[Install the Now CLI](https://zeit.co/download) and run `vercel login`
 
-![now login](https://dev-to-uploads.s3.amazonaws.com/i/pex7mfz3d29xsy5hdqw1.png)
+![vercel login](https://dev-to-uploads.s3.amazonaws.com/i/pex7mfz3d29xsy5hdqw1.png)
 
 # 🔥 Set up Firebase CLI
 
@@ -115,7 +115,6 @@ Open your your editor, and the content below to the 2 `.env` files, filling in y
 # == Firebase app keys (staging) ==
 FIREBASE_API_KEY=■■■■■■■■-■■■■■■■■
 FIREBASE_AUTH_DOMAIN=■■■■■■■■.firebaseapp.com
-FIREBASE_DATABASE_URL=https://■■■■■■■■.firebaseio.com
 FIREBASE_PROJECT_ID=■■■■■■■■
 FIREBASE_STORAGE_BUCKET=■■■■■■■■.appspot.com
 FIREBASE_MESSAGING_SENDER_ID=■■■■■■■■
@@ -130,7 +129,6 @@ FIREBASE_MEASUREMENT_ID=G-■■■■■■■■
 # == Firebase app keys (staging) ==
 FIREBASE_API_KEY=■■■■■■■■-■■■■■■■■
 FIREBASE_AUTH_DOMAIN=■■■■■■■■.firebaseapp.com
-FIREBASE_DATABASE_URL=https://■■■■■■■■.firebaseio.com
 FIREBASE_PROJECT_ID=■■■■■■■■
 FIREBASE_STORAGE_BUCKET=■■■■■■■■.appspot.com
 FIREBASE_MESSAGING_SENDER_ID=■■■■■■■■
@@ -165,28 +163,28 @@ Open your **production** project in the Firebase console, and follow the same st
 1. Download your **admin keys** to `/functions/serviceAccount-production.json`
 2. Find your **app keys** in the Firebase console's Project settings page.
 
-Run the following commands to add your production Firebase keys to Now:
+Run the following commands to add your production Firebase keys to Now -be particularly mindful of the double dash (`--`) in the last one:
 
 ```
-$ now secrets add firebase-api-key ■■■■■■■■-■■■■■■■■
+$ vercel secrets add firebase-api-key ■■■■■■■■-■■■■■■■■
 
-$ now secrets add firebase-auth-domain ■■■■■■■■.firebaseapp.com
+$ vercel secrets add firebase-auth-domain ■■■■■■■■.firebaseapp.com
 
-$ now secrets add firebase-database-url https://■■■■■■■■.firebaseio.com
+$ vercel secrets add firebase-database-url https://■■■■■■■■.firebaseio.com
 
-$ now secrets add firebase-project-id ■■■■■■■■
+$ vercel secrets add firebase-project-id ■■■■■■■■
 
-$ now secrets add firebase-storage-bucket ■■■■■■■■.appspot.com
+$ vercel secrets add firebase-storage-bucket ■■■■■■■■.appspot.com
 
-$ now secrets add firebase-messaging-sender-id ■■■■■■■■
+$ vercel secrets add firebase-messaging-sender-id ■■■■■■■■
 
-$ now secrets add firebase-app-id 1:■■■■■■■■:web:■■■■■■■■
+$ vercel secrets add firebase-app-id 1:■■■■■■■■:web:■■■■■■■■
 
-$ now secrets add firebase-measurement-id G-■■■■■■■■
+$ vercel secrets add firebase-measurement-id G-■■■■■■■■
 
-$ now secrets add firebase-client-email firebase-adminsdk-■■■■@■■■■■■■■.iam.gserviceaccount.com
+$ vercel secrets add firebase-client-email firebase-adminsdk-■■■■@■■■■■■■■.iam.gserviceaccount.com
 
-$ now secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n"
+$ vercel secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n"
 ```
 
 # 🔥 Firestore – creating a custom index
